@@ -16,4 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('article', 'ArticleController@show');
 Route::get('articles', 'ArticleController@index');
-Route::post('articles/import', 'ArticleController@import');
+Route::post('articles', 'ArticleController@import');
