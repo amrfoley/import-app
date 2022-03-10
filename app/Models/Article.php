@@ -9,5 +9,5 @@ class Article extends Model
 {
     use SoftDeletes;
 
-    protected $fillables = ['title', 'price', 'part_number', 'article_group_id'];
+    protected $fillable = ['title', 'price', 'part_number', 'article_group_id'];
 }
