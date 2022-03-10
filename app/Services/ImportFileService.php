@@ -4,16 +4,12 @@ namespace App\Services;
 
 use App\Models\Article;
 use Maatwebsite\Excel\Concerns\SkipsEmptyRows;
-use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
-use Maatwebsite\Excel\Validators\Failure;
 
 class ImportFileService implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows
 {
-    protected $headings = ['product_name', 'part_number', 'articel_group_id', 'prize'];
-
     public function model(array $row)
     {
         return new Article([

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\Article;
 use App\Services\ImportFileService;
+use App\Services\RedisService;
 use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Validators\ValidationException;
@@ -12,8 +13,9 @@ class ArticleController
 {
     public function index(Request $request)
     {
-        $articles = Article::select(['id', 'title', 'part_number', 'article_group_id', 'price', 'price'])
-            ->paginate($request->per_page ?? 50);
+        $articles = RedisService::has('articles')? RedisService::get('articles') :
+            Article::select(['id', 'title', 'part_number', 'article_group_id', 'price', 'price'])
+                ->paginate($request->per_page ?? 50);
 
         return response()->json(['articles' => $articles]);
     }
