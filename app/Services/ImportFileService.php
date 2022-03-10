@@ -10,7 +10,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Validators\Failure;
 
-class ImportFileService implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows, SkipsOnFailure
+class ImportFileService implements ToModel, WithHeadingRow, WithValidation, SkipsEmptyRows
 {
     protected $headings = ['product_name', 'part_number', 'articel_group_id', 'prize'];
 
@@ -28,17 +28,9 @@ class ImportFileService implements ToModel, WithHeadingRow, WithValidation, Skip
     {
         return [
             'product_name'      => 'required',
-            'part_number'       => 'required',
+            'part_number'       => ['required', 'max:16', 'unique:articles,part_number'],
             'articel_group_id'  => ['required', 'numeric'],
             'prize'             => ['required', 'numeric'],
         ];
-    }
-
-    public function onFailure(Failure ...$failures)
-    {
-        if(!empty($failures))
-        {
-            throw new \Exception($failures[0]->toArray()[0]);
-        }
     }
 }

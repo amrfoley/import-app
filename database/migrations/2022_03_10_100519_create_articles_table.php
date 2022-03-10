@@ -16,7 +16,7 @@ class CreateArticlesTable extends Migration
         Schema::create('articles', function (Blueprint $table) {
             $table->id();
             $table->text('title');
-            $table->string('part_number', 16);
+            $table->string('part_number', 16)->unique();
             $table->unsignedBigInteger('article_group_id');
             $table->float('price');
             $table->timestamps();
