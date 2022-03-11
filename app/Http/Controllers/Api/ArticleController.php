@@ -13,7 +13,7 @@ class ArticleController
 {
     public function index(Request $request)
     {
-        $articles = RedisService::has('articles')? RedisService::get('articles') :
+        $articles = RedisService::has('articles')? RedisService::all('articles') :
             Article::select(['id', 'title', 'part_number', 'article_group_id', 'price', 'price'])
                 ->paginate($request->per_page ?? 50);
 
@@ -24,13 +24,14 @@ class ArticleController
     {
         if($request->has('part_number') || $request->has('id'))
         {
-            $article = Article::select(['id', 'title', 'part_number', 'article_group_id', 'price', 'price'])
-                ->where('id', $request->id)
-                ->orWhere('part_number', $request->part_number)
-                ->first();
+            $article = RedisService::fetch('articles', $request->id ?? $request->part_number) ?? 
+                Article::select(['id', 'title', 'part_number', 'article_group_id', 'price', 'price'])
+                    ->where('id', $request->id)
+                    ->orWhere('part_number', $request->part_number)
+                    ->first();
         }
 
-        return response()->json($article ?? null);
+        return response()->json($article);
     }
 
     public function import(Request $request)
